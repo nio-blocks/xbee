@@ -48,15 +48,14 @@ class XBee(Block):
         super().stop()
 
     def _read(self):
-        while True:
-            if self._stop_event.is_set():
-                # Stop reading on block stop
-                break
+        while not self._stop_event.is_set():
             try:
                 response = self._xbee.wait_read_frame()
                 self.notify_signals([Signal(response)])
             except:
-                self._logger.exception('Failed reading from Xbee. Aborting...')
-                self.notify_management_signal(BlockStatusSignal(
-                    BlockStatus.error, 'Failed to read Xbee'))
+                if not self._stop_event.is_set():
+                    self._logger.exception(
+                        'Failed reading from Xbee. Aborting...')
+                    self.notify_management_signal(BlockStatusSignal(
+                        BlockStatus.error, 'Failed to read Xbee'))
                 break
