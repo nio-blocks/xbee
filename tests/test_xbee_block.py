@@ -1,4 +1,3 @@
-from ..xbee_block import XBee
 from time import sleep
 from collections import defaultdict
 from unittest import skipUnless
@@ -9,6 +8,7 @@ from nio.util.support.block_test_case import NIOBlockTestCase
 xbee_available = True
 try:
     import xbee
+    from ..xbee_block import XBee
 except:
     xbee_available = False
 
