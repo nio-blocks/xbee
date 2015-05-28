@@ -14,7 +14,7 @@ except:
 
 
 @skipUnless(xbee_available, 'xbee is not available!!')
-class TestMongoDB(NIOBlockTestCase):
+class TestXBee(NIOBlockTestCase):
 
     def setUp(self):
         super().setUp()
@@ -25,14 +25,21 @@ class TestMongoDB(NIOBlockTestCase):
 
     @patch('xbee.XBee')
     @patch('serial.Serial')
-    def test_read_xbee(self, mock_ser, mock_xbee):
+    def test_xbee_read(self, mock_serial, mock_xbee):
         blk = XBee()
         self.configure_block(blk, {})
-        # Simulate some response from the xbee read
-        blk._xbee.wait_read_frame.return_value = {'sample': 'signal'}
         blk.start()
-        # Wait a little bit for a read
-        sleep(0.1)
+        blk._callback({'sample': 'signal'})
         self.assertTrue(len(self.signals['default']))
         self.assertEqual(self.signals['default'][0].sample, 'signal')
+        blk.stop()
+
+    @patch('xbee.XBee')
+    @patch('serial.Serial')
+    def test_bad_response(self, mock_serial, mock_xbee):
+        blk = XBee()
+        self.configure_block(blk, {})
+        blk.start()
+        blk._callback('not a dict')
+        self.assertFalse(len(self.signals['default']))
         blk.stop()
