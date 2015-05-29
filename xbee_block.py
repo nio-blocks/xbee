@@ -61,26 +61,24 @@ class XBee(Block):
             self._logger.debug(
                 'Establish serial connection with XBee'
                 ': {}'.format(self.serial_port))
-            self._xbee = xbee.XBee(self._serial,
-                                   callback=self._callback,
-                                   escaped=True,
-                                   error_callback=self._error_callback)
-            self._reconnect_delay = 1
-        except:
-            # xbee on pypi does not have error_callback
             try:
-                self._serial = serial.Serial(self.serial_port, self.baud_rate)
                 self._xbee = xbee.XBee(self._serial,
-                                    callback=self._callback,
-                                    escaped=True)
-                self._reconnect_delay = 1
+                                       callback=self._callback,
+                                       escaped=True,
+                                       error_callback=self._error_callback)
+            except:
+                # xbee on pypi does not have error_callback
+                self._xbee = xbee.XBee(self._serial,
+                                       callback=self._callback,
+                                       escaped=True)
                 self._logger.exception(
                     'XBee conenctecion established but the xbee library on pypi'
                     ' does not have error_callback. For improved performance,'
                     ' try using http://github.com:neutralio/python-xbee.git')
-            except:
-                self._logger.exception('Failed to establish XBee connection')
-                self._reconnect()
+            self._reconnect_delay = 1
+        except:
+            self._logger.exception('Failed to establish XBee connection')
+            self._reconnect()
 
     def _callback(self, response):
         try:
