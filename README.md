@@ -5,6 +5,12 @@ Read XBee over serial.
 
 IMPORTANT: You first need to install the [FTDI drivers](http://www.ftdichip.com/Support/Documents/AppNotes/AN_134_FTDI_Drivers_Installation_Guide_for_MAC_OSX.pdf) to communicate with the XBEE over USB. You will also want a [USB explorer](https://learn.sparkfun.com/tutorials/exploring-xbees-and-xctu/selecting-an-explorer) to hook up the XBee to your computer.
 
+It is recommended that use use [XCTU](http://www.digi.com/products/wireless-wired-embedded-solutions/zigbee-rf-modules/xctu) to configure the XBees before using in n.io.
+
+The XBee needs to be in API Mode. Note: This is NOT the default setting on the XBee.
+
+From the computer terminal, view the serial ports with `ls /dev/tty.*` to discover where your XBee is connected. Ex. /dev/tty.usbserial-DA013Y6Qdev/tty.usbserial
+
 Properties
 ----------
 
