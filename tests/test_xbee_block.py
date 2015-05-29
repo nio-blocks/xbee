@@ -43,3 +43,15 @@ class TestXBee(NIOBlockTestCase):
         blk._callback('not a dict')
         self.assertFalse(len(self.signals['default']))
         blk.stop()
+
+    @patch('xbee.XBee')
+    @patch('serial.Serial')
+    def test_reconnect(self, mock_serial, mock_xbee):
+        blk = XBee()
+        mock_xbee.side_effect = Exception
+        self.configure_block(blk, {})
+        # Wait for one reconnect
+        from time import sleep
+        sleep(1)
+        # Each connect will fail twice, so with one reconnect, we have 4 calls.
+        self.assertEqual(4, mock_xbee.call_count)
