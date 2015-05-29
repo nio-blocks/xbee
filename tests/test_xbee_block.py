@@ -3,6 +3,7 @@ from collections import defaultdict
 from unittest import skipUnless
 from unittest.mock import MagicMock, patch
 from nio.util.support.block_test_case import NIOBlockTestCase
+from nio.common.signal.base import Signal
 
 
 xbee_available = True
@@ -41,5 +42,31 @@ class TestXBee(NIOBlockTestCase):
         self.configure_block(blk, {})
         blk.start()
         blk._callback('not a dict')
+        self.assertFalse(len(self.signals['default']))
+        blk.stop()
+
+    @patch('xbee.XBee')
+    @patch('serial.Serial')
+    def test_xbee_send(self, mock_serial, mock_xbee):
+        blk = XBee()
+        self.configure_block(blk, {})
+        blk.start()
+        blk.process_signals([Signal({'iama': 'signal'})])
+        blk._xbee.send.assert_called_once_with(
+            'tx',
+            frame_id=b'\x01',
+            dest_addr=b'\xFF\xFF',
+            data=b'{"iama": "signal"}')
+        self.assertFalse(len(self.signals['default']))
+        blk.stop()
+
+    @patch('xbee.XBee')
+    @patch('serial.Serial')
+    def test_xbee_send_multiple_signals(self, mock_serial, mock_xbee):
+        blk = XBee()
+        self.configure_block(blk, {})
+        blk.start()
+        blk.process_signals([Signal(), Signal()])
+        self.assertEqual(2, blk._xbee.send.call_count)
         self.assertFalse(len(self.signals['default']))
         blk.stop()
