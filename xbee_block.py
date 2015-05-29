@@ -1,5 +1,6 @@
 import serial
 import xbee
+import json
 from nio.common.block.base import Block
 from nio.common.signal.base import Signal
 from nio.common.discovery import Discoverable, DiscoverableType
@@ -32,6 +33,13 @@ class XBee(Block):
         self._xbee = xbee.XBee(self._serial,
                                callback=self._callback,
                                escaped=True)
+
+    def process_signals(self, signals):
+        for signal in signals:
+            data = json.dumps(signal.to_dict()).encode()
+            self._logger.debug('Sending data: {}'.format(data))
+            self._xbee.send(
+                'tx', frame_id=b'\x01', dest_addr=b'\xFF\xFF', data=data)
 
     def stop(self):
         try:
