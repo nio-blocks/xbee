@@ -9,12 +9,17 @@ The XBee needs to be in API Mode. Note: This is NOT the default setting on the X
 
 From the computer terminal, view the serial ports with `ls /dev/tty.*` to discover where your XBee is connected. Ex. /dev/tty.usbserial-DA013Y6Qdev/tty.usbserial
 
+Output
+------
+
+Notifies a signal for each frame read from XBee. Each block in this repository will notify a signal for each api response recieved at that XBee. For example, XBeeRemoteAT notifies a remote\_at\_respone contatining the status of the Remote AT command.
+
 -------------------------------------------------------------------------------
 
-XBee
-====
+XBeeTX
+======
 
-Read/Write XBee over serial.
+Transmit signal through XBee over serial.
 
 Input signals are serialized and transmitted to the destination XBee(s).
 
@@ -49,9 +54,9 @@ Notifies a signal for each frame read from XBee. Official Signal response inform
 
   - id: The type of response.
 
-#### rx_id_data
+#### rx\_id\_data
   - rssi: RF signal strength
-  - source_addr: Which XBee sent the signal
+  - source\_addr: Which XBee sent the signal
   - samples: A list of readings from each enabled IO pin. Each item of the list is a dictionary of readings for all the enabled IO pins. Keys are of format (adc|dio)-[0-8]
   - options: ???
 
@@ -78,7 +83,7 @@ http://examples.digi.com/wp-content/uploads/2012/07/XBee_ZB_ZigBee_AT_Commands.p
 Properties
 ----------
 
--   **serial_port**: COM/Serial port of XBee. From the computer terminal, view the available ports with `ls /dev/tty.*`. Ex. /dev/tty.usbserial-DA013Y6Q
+-   **serial_port**: COM/Serial port of XBee. From the computer terminal, view the available ports with `ls /dev/tty.\*`. Ex. /dev/tty.usbserial-DA013Y6Q
 -   **command**: The command to execute, ex. 'D0', WR'.
 -   **parameter**: The command parameter, ex. '05' for 'D0' command to set pin high.
 -   **dest_addr**: 2 byte address of remote xbee to send AT command too. Default value when left blank is "FF FF" which sends a broadcast.
@@ -101,11 +106,11 @@ Output
 
 ### default
 
-Notifies a signal for each frame read from XBee. Official Signal response information can be seen in the `api_responses` of the [source code]('https://code.google.com/p/python-xbee/source/browse/xbee/ieee.py').
+Notifies a signal for each frame read from XBee. Official Signal response information can be seen in the `api\_responses` of the [source code]('https://code.google.com/p/python-xbee/source/browse/xbee/ieee.py').
 
   - id: The type of response.
 
-#### remote_at_response
+#### remote\_at\_response
 
 Each Remote AT Command will notify a response signal for each remote XBee. This can be many XBees when broadcasting to dest_addr "FF FF".
 

@@ -1,14 +1,14 @@
 import binascii
-from nio.common.discovery import Discoverable, DiscoverableType
-from nio.metadata.properties import ExpressionProperty
-from nio.metadata.properties.version import VersionProperty
+from nio.util.discovery import discoverable
+from nio.properties import Property
+from nio.properties.version import VersionProperty
 from .xbee_base import XBeeBase
 
 
-@Discoverable(DiscoverableType.block)
+@discoverable
 class XBeeRemoteAT(XBeeBase):
 
-    """ Execute Remote AT commands
+    """Execute Remote AT commands.
 
     Parameters:
         command: The command to execute, ex. 'D0', WR'
@@ -19,11 +19,10 @@ class XBeeRemoteAT(XBeeBase):
     """
 
     version = VersionProperty(version='0.1.0')
-    command = ExpressionProperty(title='AT Command (ascii)',
-                                 default='ID')
-    parameter = ExpressionProperty(title='Command Parameter (hex, ex: "05")')
-    dest_addr = ExpressionProperty(
-        title='Destination Address (2 byte hex, ex: "00 05")')
+    command = Property(title='AT Command (ascii)', default='ID')
+    parameter = Property(title='Command Parameter (hex, ex: "05")', default='')
+    dest_addr = Property(
+        title='Destination Address (2 byte hex, ex: "00 05")', default='')
 
     def process_signals(self, signals):
         for signal in signals:
@@ -33,13 +32,13 @@ class XBeeRemoteAT(XBeeBase):
                 dest_addr = self.dest_addr(signal).replace(" ", "")
                 self._remote_at(command, parameter, dest_addr)
             except:
-                self._logger.exception("Failed to execute remote at command")
+                self.logger.exception("Failed to execute remote at command")
 
     def _remote_at(self, command, parameter, dest_addr):
         command = command.encode('ascii')
         parameter = binascii.unhexlify(parameter)
         dest_addr = binascii.unhexlify(dest_addr) if dest_addr else b'\xFF\xFF'
-        self._logger.debug(
+        self.logger.debug(
             "Executing Remote AT command: {}, with parameter: {}".format(
                 command, parameter))
         # remote_at: 0x17 "Remote AT Command"

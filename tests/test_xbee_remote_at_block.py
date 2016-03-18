@@ -1,9 +1,10 @@
-from time import sleep
 from collections import defaultdict
+from time import sleep
 from unittest import skipUnless
 from unittest.mock import MagicMock, patch
-from nio.util.support.block_test_case import NIOBlockTestCase
-from nio.common.signal.base import Signal
+from nio.block.terminals import DEFAULT_TERMINAL
+from nio.signal.base import Signal
+from nio.testing.block_test_case import NIOBlockTestCase
 
 
 xbee_available = True
@@ -16,13 +17,6 @@ except:
 
 @skipUnless(xbee_available, 'xbee is not available!!')
 class TestXBeeRemoteAT(NIOBlockTestCase):
-
-    def setUp(self):
-        super().setUp()
-        self.signals = defaultdict(list)
-
-    def signals_notified(self, signals, output_id):
-        self.signals[output_id].extend(signals)
 
     @patch('xbee.XBee')
     @patch('serial.Serial')
@@ -37,7 +31,7 @@ class TestXBeeRemoteAT(NIOBlockTestCase):
             dest_addr=b'\xFF\xFF',
             command=b'ID',
             parameter=b'')
-        self.assertFalse(len(self.signals['default']))
+        self.assertFalse(len(self.last_notified[DEFAULT_TERMINAL]))
         blk.stop()
 
     @patch('xbee.XBee')
@@ -57,7 +51,7 @@ class TestXBeeRemoteAT(NIOBlockTestCase):
             dest_addr=b'\x00\x42',
             command=b'D0',
             parameter=b'\x05')
-        self.assertFalse(len(self.signals['default']))
+        self.assertFalse(len(self.last_notified[DEFAULT_TERMINAL]))
         blk.stop()
 
     @patch('xbee.XBee')

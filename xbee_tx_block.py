@@ -2,18 +2,23 @@ import serial
 import xbee
 import json
 from time import sleep
-from nio.common.signal.base import Signal
-from nio.common.discovery import Discoverable, DiscoverableType
-from nio.metadata.properties import StringProperty, IntProperty
-from nio.metadata.properties.version import VersionProperty
-from nio.modules.threading import spawn
+from nio.signal.base import Signal
+from nio.util.discovery import discoverable
+from nio.properties import StringProperty, IntProperty
+from nio.properties.version import VersionProperty
+from nio.util.threading.spawn import spawn
 from .xbee_base import XBeeBase
 
 
-@Discoverable(DiscoverableType.block)
-class XBee(XBeeBase):
+@discoverable
+class XBeeTX(XBeeBase):
 
-    """ Read XBee over serial.
+    """Execute TX Command.
+
+    XBee sends the serialized version of each input signal to thie block. It is
+    sent to the configured "Distnation Address" of the XBee. That destination
+    XBee will receive that serialized signal. If that block is connected to nio
+    then the block will notify the signal.
 
     Parameters:
         serial_port (str): COM/Serial port the XBee is connected to
@@ -24,7 +29,7 @@ class XBee(XBeeBase):
     def process_signals(self, signals):
         for signal in signals:
             data = json.dumps(signal.to_dict()).encode()
-            self._logger.debug('Sending data: {}'.format(data))
+            self.logger.debug('Sending data: {}'.format(data))
             # tx: 0x01 "Tx (Transmit) Request: 16-bit address"
             # frame_id: 0x01
             # dest_addr: 0xFFFF appears to make it so that it sends to the
