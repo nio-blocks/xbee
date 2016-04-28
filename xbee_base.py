@@ -17,9 +17,9 @@ class XBeeBase(Block):
         serial_port (str): COM/Serial port the XBee is connected to
     """
 
-    serial_port = StringProperty(name='COM/Serial Port',
+    serial_port = StringProperty(title='COM/Serial Port',
                                  default='/dev/ttyAMA0')
-    baud_rate = IntProperty(name='Baud Rate', default=9600, hidden=True)
+    baud_rate = IntProperty(title='Baud Rate', default=9600, hidden=True)
 
     def __init__(self):
         super().__init__()
