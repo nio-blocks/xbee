@@ -117,6 +117,13 @@ Each AT Command will notify a response signal.
  }
 ```
 
+Each response includes a status, with the following possible values:
+-00 OK
+-01 Error
+-02 Iinvalid Command
+-03 Invalid Parameter
+-04 No Repsonse
+
 -------------------------------------------------------------------------------
 
 XBeeRemoteAT
@@ -170,3 +177,11 @@ Each Remote AT Command will notify a response signal for each remote XBee. This 
   'source_addr': b'\x00\x03'
 }
 ```
+
+Each response includes a status, with the following possible values:
+-00 OK
+-01 Error
+-02 Iinvalid Command
+-03 Invalid Parameter
+-04 No Repsonse
+
