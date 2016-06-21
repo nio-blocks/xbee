@@ -113,7 +113,7 @@ Each AT Command will notify a response signal.
   'id': 'at_response',
   'frame_id': b'\x88',
   'status': b'\x00',
-  'command': b'D0',
+  'command': b'D0'
  }
 ```
 
@@ -167,6 +167,6 @@ Each Remote AT Command will notify a response signal for each remote XBee. This 
   'source_addr_long': b'\x00\x13\xa2\x00@\xc1S\x05',
   'status': b'\x00',
   'command': b'D0',
-  'source_addr': b'\x00\x03',
+  'source_addr': b'\x00\x03'
 }
 ```
