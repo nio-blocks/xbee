@@ -152,7 +152,7 @@ Output
 
 ### default
 
-Notifies a signal for each frame read from XBee. Official Signal response information can be seen in the `api_responses` of the [source code]('https://code.google.com/p/python-xbee/source/browse/xbee/ieee.py').
+Notifies a signal for each frame read from XBee. Official Signal response information can be seen in the `api_responses` of the [source code]('https://github.com/nioinnovation/python-xbee/blob/master/xbee/ieee.py').
 
   - id: The type of response.
 
