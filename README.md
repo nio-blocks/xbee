@@ -122,7 +122,7 @@ Each response includes a status, with the following possible values:
 -01 Error
 -02 Invalid Command
 -03 Invalid Parameter
--04 No Repsonse
+-04 No Response
 
 -------------------------------------------------------------------------------
 
@@ -183,5 +183,5 @@ Each response includes a status, with the following possible values:
 -01 Error
 -02 Invalid Command
 -03 Invalid Parameter
--04 No Repsonse
+-04 No Response
 
