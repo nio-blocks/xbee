@@ -32,7 +32,7 @@ class TestXBeeATCommand(NIOBlockTestCase):
         blk.process_signals([Signal({'iama': 'signal'})])
         blk._xbee.send.assert_called_once_with(
             'at',
-            frame_id=b'\x08',
+            frame_id=b'\x01',
             command=b'ID',
             parameter=b'')
         self.assertFalse(len(self.signals['default']))
@@ -50,7 +50,7 @@ class TestXBeeATCommand(NIOBlockTestCase):
         blk.process_signals([Signal({'iama': 'signal'})])
         blk._xbee.send.assert_called_once_with(
             'at',
-            frame_id=b'\x08',
+            frame_id=b'\x01',
             command=b'D0',
             parameter=b'\x05')
         self.assertFalse(len(self.signals['default']))

@@ -1,11 +1,11 @@
 XBee Blocks
 ===========
 
-IMPORTANT: You first need to install the [FTDI drivers](http://www.ftdichip.com/Support/Documents/AppNotes/AN_134_FTDI_Drivers_Installation_Guide_for_MAC_OSX.pdf) to communicate with the XBEE over USB. You will also want a [USB explorer](https://learn.sparkfun.com/tutorials/exploring-xbees-and-xctu/selecting-an-explorer) to hook up the XBee to your computer.
+IMPORTANT: If you are using a USB connection to your XBee(s) rather than TTL serial, you first need to install the [FTDI drivers](http://www.ftdichip.com/Support/Documents/AppNotes/AN_134_FTDI_Drivers_Installation_Guide_for_MAC_OSX.pdf) to communicate with the XBEE over USB. You will also want a [USB explorer](https://learn.sparkfun.com/tutorials/exploring-xbees-and-xctu/selecting-an-explorer) to hook up the XBee to your computer.
 
-It is recommended that use use [XCTU](http://www.digi.com/products/wireless-wired-embedded-solutions/zigbee-rf-modules/xctu) to configure the XBees before using in n.io.
+It is recommended that you use [XCTU](http://www.digi.com/products/wireless-wired-embedded-solutions/zigbee-rf-modules/xctu) to configure the XBees via USB or serial before using in n.io. At the minimum it is necessary to enable API mode to accept AT commands and further configuration settings.
 
-The XBee needs to be in API Mode. Note: This is NOT the default setting on the XBee.
+XBee modules need to be configured with AP=2, API w/ PPP, which automatically escapes special characters in transmission. Note: This is NOT the default setting on the XBee.
 
 From the computer terminal, view the serial ports with `ls /dev/tty.*` to discover where your XBee is connected. Ex. /dev/tty.usbserial-DA013Y6Qdev/tty.usbserial
 
@@ -120,7 +120,7 @@ Each AT Command will notify a response signal.
 Each response includes a status, with the following possible values:
 -00 OK
 -01 Error
--02 Iinvalid Command
+-02 Invalid Command
 -03 Invalid Parameter
 -04 No Repsonse
 
@@ -181,7 +181,7 @@ Each Remote AT Command will notify a response signal for each remote XBee. This 
 Each response includes a status, with the following possible values:
 -00 OK
 -01 Error
--02 Iinvalid Command
+-02 Invalid Command
 -03 Invalid Parameter
 -04 No Repsonse
 
