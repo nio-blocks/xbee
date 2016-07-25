@@ -4,7 +4,7 @@ import json
 from time import sleep
 from nio.block.base import Block
 from nio.signal.base import Signal
-from nio.properties import StringProperty, IntProperty
+from nio.properties import StringProperty, IntProperty, BoolProperty
 from nio.properties.version import VersionProperty
 from nio.util.threading.spawn import spawn
 
@@ -14,9 +14,12 @@ class XBeeBase(Block):
     """ Read XBee over serial.
 
     Parameters:
+        escaped (bool): True uses API mode 2 
         serial_port (str): COM/Serial port the XBee is connected to
+        baud_rate (int): BAUD rate to communicate with the serial port
     """
 
+    escaped = BoolProperty(default=True, title='Escaped characters? (API mode 2)')
     serial_port = StringProperty(title='COM/Serial Port',
                                  default='/dev/ttyAMA0')
     baud_rate = IntProperty(title='Baud Rate', default=9600, hidden=True)
@@ -55,16 +58,18 @@ class XBeeBase(Block):
             self.logger.debug(
                 'Establish serial connection with XBee'
                 ': {}'.format(self.serial_port()))
+            self.logger.debug('Escaped is'
+                ': {}'.format(self.escaped()))
             try:
                 self._xbee = xbee.XBee(self._serial,
                                        callback=self._callback,
-                                       escaped=True,
+                                       escaped=self.escaped(),
                                        error_callback=self._error_callback)
             except:
                 # xbee on pypi does not have error_callback
                 self._xbee = xbee.XBee(self._serial,
                                        callback=self._callback,
-                                       escaped=True)
+                                       escaped=self.escaped())
                 self.logger.exception(
                     'XBee connection established but the xbee library on pypi'
                     ' does not have error_callback. For improved performance,'
