@@ -19,7 +19,7 @@ class XBeeBase(Block):
         baud_rate (int): BAUD rate to communicate with the serial port
     """
 
-    escaped = BoolProperty(default=False, title='Escaped characters? (API mode 2)')
+    escaped = BoolProperty(default=True, title='Escaped characters? (API mode 2)')
     serial_port = StringProperty(title='COM/Serial Port',
                                  default='/dev/ttyAMA0')
     baud_rate = IntProperty(title='Baud Rate', default=9600, hidden=True)
