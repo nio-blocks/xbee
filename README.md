@@ -5,14 +5,14 @@ IMPORTANT: You first need to install the [FTDI drivers](http://www.ftdichip.com/
 
 It is recommended that use use [XCTU](http://www.digi.com/products/wireless-wired-embedded-solutions/zigbee-rf-modules/xctu) to configure the XBees before using in n.io.
 
-The XBee needs to be in API Mode. Note: This is NOT the default setting on the XBee.
+The XBee needs to be in API Mode, 1 or 2. Note: This is NOT the default setting on the XBee.
 
 From the computer terminal, view the serial ports with `ls /dev/tty.*` to discover where your XBee is connected. Ex. /dev/tty.usbserial-DA013Y6Qdev/tty.usbserial
 
 Output
 ------
 
-Notifies a signal for each frame read from XBee. Each block in this repository will notify a signal for each api response recieved at that XBee. For example, XBeeRemoteAT notifies a remote\_at\_respone contatining the status of the Remote AT command.
+Notifies a signal for each frame read from XBee. Each block in this repository will notify a signal for each api response recieved at that XBee. For example, XBeeRemoteAT notifies a `remote\_at\_response` contatining the status of the Remote AT command.
 
 -------------------------------------------------------------------------------
 
@@ -73,6 +73,64 @@ Notifies a signal for each frame read from XBee. Official Signal response inform
 
 -------------------------------------------------------------------------------
 
+XBeeATCommand
+============
+
+Send AT commands to a local XBee.
+
+http://examples.digi.com/wp-content/uploads/2012/07/XBee_ZB_ZigBee_AT_Commands.pdf
+
+Properties
+----------
+
+-   **serial_port**: COM/Serial port of XBee. From the computer terminal, view the available ports with `ls /dev/tty.*`. Ex. /dev/tty.usbserial-DA013Y6Q
+-   **command**: The command to execute, ex. 'D0', WR'.
+-   **parameter**: The command parameter, ex. '05' for 'D0' command to set pin high.
+
+Dependencies
+------------
+
+-   [xbee](https://pypi.python.org/pypi/XBee)
+
+Commands
+--------
+None
+
+Input
+-----
+Any list of signals.
+
+Output
+------
+
+### default
+
+Notifies a signal for each frame read from XBee. Official Signal response information can be seen in the `api_responses` of the [source code]('https://github.com/nioinnovation/python-xbee/blob/master/xbee/ieee.py').
+
+  - id: The type of response.
+
+#### at_response
+
+Each AT Command will notify a response signal.
+
+```
+{
+  'id': 'at_response',
+  'frame_id': b'\x88',
+  'status': b'\x00',
+  'command': b'D0'
+ }
+```
+
+Each response includes a status, with the following possible values:
+-00 OK
+-01 Error
+-02 Invalid Command
+-03 Invalid Parameter
+-04 No Response
+
+-------------------------------------------------------------------------------
+
 XBeeRemoteAT
 ============
 
@@ -99,7 +157,7 @@ None
 
 Input
 -----
-None
+Any list of signals.
 
 Output
 ------
@@ -124,3 +182,10 @@ Each Remote AT Command will notify a response signal for each remote XBee. This 
   'source_addr': b'\x00\x03',
 }
 ```
+
+Each response includes a status, with the following possible values:
+-00 OK
+-01 Error
+-02 Invalid Command
+-03 Invalid Parameter
+-04 No Response
