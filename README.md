@@ -12,7 +12,7 @@ From the computer terminal, view the serial ports with `ls /dev/tty.*` to discov
 Output
 ------
 
-Notifies a signal for each frame read from XBee. Each block in this repository will notify a signal for each api response recieved at that XBee. For example, XBeeRemoteAT notifies a `remote\_at\_response` contatining the status of the Remote AT command.
+Notifies a signal for each frame read from XBee. Each block in this repository will notify a signal for each api response recieved at that XBee. For example, XBeeRemoteAT notifies a `remote_at_response` contatining the status of the Remote AT command.
 
 -------------------------------------------------------------------------------
 
