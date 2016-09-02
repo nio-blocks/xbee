@@ -1,10 +1,11 @@
 import serial
 import xbee
 import json
+import binascii
 from time import sleep
 from nio.signal.base import Signal
 from nio.util.discovery import discoverable
-from nio.properties import StringProperty, IntProperty
+from nio.properties import StringProperty, Property
 from nio.properties.version import VersionProperty
 from nio.util.threading.spawn import spawn
 from .xbee_base import XBeeBase
@@ -21,19 +22,23 @@ class XBeeTX(XBeeBase):
     then the block will notify the signal.
 
     Parameters:
-        serial_port (str): COM/Serial port the XBee is connected to
+        dest_addr: 2 byte address of remote xbee to send AT command too.
+            Default value when left blank is "FF FF" which sends a broadcast.
     """
 
-    version = VersionProperty(version='0.2.0')
+    version = VersionProperty(version='0.2.1')
+    data = Property(title="Data", default="{{ $.to_dict() }}")
 
     def process_signals(self, signals):
         for signal in signals:
-            data = json.dumps(signal.to_dict()).encode()
-            self.logger.debug('Sending data: {}'.format(data))
+            data_encoded = "{}".format(self.data(signal)).encode()
+            self.logger.debug('Sending data: {}'.format(data_encoded))
             # tx: 0x01 "Tx (Transmit) Request: 16-bit address"
             # frame_id: 0x01
             # dest_addr: 0xFFFF appears to make it so that it sends to the
             #    configured "Destination Address" on the XBee
             # data: RF data bytes to be transmitted
-            self._xbee.send(
-                'tx', frame_id=b'\x01', dest_addr=b'\xFF\xFF', data=data)
+            self._xbee.send('tx',
+                            frame_id=b'\x01',
+                            dest_addr=b'\xFF\xFF',
+                            data=data_encoded)

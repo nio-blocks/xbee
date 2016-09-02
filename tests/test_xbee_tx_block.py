@@ -50,7 +50,7 @@ class TestXBeeTX(NIOBlockTestCase):
             'tx',
             frame_id=b'\x01',
             dest_addr=b'\xFF\xFF',
-            data=b'{"iama": "signal"}')
+            data=b"{'iama': 'signal'}")
         self.assertFalse(len(self.last_notified[DEFAULT_TERMINAL]))
         blk.stop()
 
