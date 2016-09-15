@@ -1,11 +1,9 @@
 import serial
 import xbee
-import json
 from time import sleep
 from nio.block.base import Block
 from nio.signal.base import Signal
 from nio.properties import StringProperty, IntProperty, BoolProperty
-from nio.properties.version import VersionProperty
 from nio.util.threading.spawn import spawn
 
 

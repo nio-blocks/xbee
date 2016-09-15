@@ -1,5 +1,3 @@
-from collections import defaultdict
-from time import sleep
 from unittest import skipUnless
 from unittest.mock import MagicMock, patch
 from nio.block.terminals import DEFAULT_TERMINAL

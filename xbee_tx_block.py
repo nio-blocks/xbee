@@ -1,13 +1,6 @@
-import serial
-import xbee
-import json
-import binascii
-from time import sleep
-from nio.signal.base import Signal
 from nio.util.discovery import discoverable
-from nio.properties import StringProperty, Property
+from nio.properties import Property
 from nio.properties.version import VersionProperty
-from nio.util.threading.spawn import spawn
 from .xbee_base import XBeeBase
 
 
