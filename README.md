@@ -1,11 +1,11 @@
 XBee Blocks
 ===========
 
-IMPORTANT: You first need to install the [FTDI drivers](http://www.ftdichip.com/Support/Documents/AppNotes/AN_134_FTDI_Drivers_Installation_Guide_for_MAC_OSX.pdf) to communicate with the XBee over USB. You will also want a [USB explorer](https://learn.sparkfun.com/tutorials/exploring-xbees-and-xctu/selecting-an-explorer) to hook up the XBee to your computer.
+IMPORTANT: If you are using a USB connection to your XBee(s) rather than TTL serial, you first need to install the [FTDI drivers](http://www.ftdichip.com/Support/Documents/AppNotes/AN_134_FTDI_Drivers_Installation_Guide_for_MAC_OSX.pdf) to communicate with the XBEE over USB. You will also want a [USB explorer](https://learn.sparkfun.com/tutorials/exploring-xbees-and-xctu/selecting-an-explorer) to hook up the XBee to your computer.
 
-It is recommended that use use [XCTU](http://www.digi.com/products/wireless-wired-embedded-solutions/zigbee-rf-modules/xctu) to configure the XBees before using in n.io.
+It is recommended that you use [XCTU](http://www.digi.com/products/wireless-wired-embedded-solutions/zigbee-rf-modules/xctu) to configure the XBees via USB or serial before using in n.io. At the minimum it is necessary to enable API mode to accept AT commands and further configuration settings.
 
-The XBee needs to be in API Mode, 1 or 2. Note: This is NOT the default setting on the XBee.
+XBee modules need to be configured with AP=2, API w/ PPP, which automatically escapes special characters in transmission. Note: This is NOT the default setting on the XBee.
 
 From the computer terminal, view the serial ports with `ls /dev/tty.*` to discover where your XBee is connected. Ex. `/dev/tty.usbserial-DA013Y6Qdev/tty.usbserial`
 
@@ -50,7 +50,7 @@ Output
 
 ### default
 
-Notifies a signal for each frame read from XBee. Official Signal response information can be seen in the `api_responses` of the [source code]('https://code.google.com/p/python-xbee/source/browse/xbee/ieee.py').
+Notifies a signal for each frame read from XBee. Official Signal response information can be seen in the `api_responses` of the [source code]('https://github.com/nioinnovation/python-xbee/blob/master/xbee/ieee.py').
 
   - **id**: The type of response.
 
@@ -74,7 +74,7 @@ Notifies a signal for each frame read from XBee. Official Signal response inform
 -------------------------------------------------------------------------------
 
 XBeeATCommand
-============
+=============
 
 Send [AT commands](http://examples.digi.com/wp-content/uploads/2012/07/XBee_ZB_ZigBee_AT_Commands.pdf) to a local XBee.
 
@@ -160,7 +160,7 @@ Output
 
 ### default
 
-Notifies a signal for each frame read from XBee. Official Signal response information can be seen in the `api\_responses` of the [source code]('https://code.google.com/p/python-xbee/source/browse/xbee/ieee.py').
+Notifies a signal for each frame read from XBee. Official Signal response information can be seen in the `api_responses` of the [source code]('https://github.com/nioinnovation/python-xbee/blob/master/xbee/ieee.py').
 
   - **id**: The type of response.
 
@@ -175,7 +175,7 @@ Each Remote AT Command will notify a response signal for each remote XBee. This 
   'source_addr_long': b'\x00\x13\xa2\x00@\xc1S\x05',
   'status': b'\x00',
   'command': b'D0',
-  'source_addr': b'\x00\x03',
+  'source_addr': b'\x00\x03'
 }
 ```
 

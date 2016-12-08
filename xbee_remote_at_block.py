@@ -48,6 +48,10 @@ class XBeeRemoteAT(XBeeBase):
         # command: The command to execute, ex. 'D0', WR'
         # parameter: The command parameter, ex. b'\x05' for 'D0' command
         #    to set pin high
+        #
+        # frame_id is an arbitrary value, 1 hex byte, used to associate sent 
+        # packets with their responses. If set to 0 no response will be sent.
+        # Could be a block property.
         self._xbee.send(
             'remote_at', frame_id=b'\x01', dest_addr=dest_addr,
             command=command, parameter=parameter)
