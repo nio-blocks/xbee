@@ -25,8 +25,11 @@ class TestXBeeRemoteAT(NIOBlockTestCase):
         blk.process_signals([Signal({'iama': 'signal'})])
         blk._xbee.send.assert_called_once_with(
             'remote_at',
+            id=b'\x17',
             frame_id=b'\x01',
+            dest_addr_long=b'\x00\x00\x00\x00\x00\x00\x00\x00',
             dest_addr=b'\xFF\xFF',
+            options=b'\x02',
             command=b'ID',
             parameter=b'')
         self.assertFalse(len(self.last_notified[DEFAULT_TERMINAL]))
@@ -45,8 +48,11 @@ class TestXBeeRemoteAT(NIOBlockTestCase):
         blk.process_signals([Signal({'iama': 'signal'})])
         blk._xbee.send.assert_called_once_with(
             'remote_at',
+            id=b'\x17',
             frame_id=b'\x01',
+            dest_addr_long=b'\x00\x00\x00\x00\x00\x00\x00\x00',
             dest_addr=b'\x00\x42',
+            options=b'\x02',
             command=b'D0',
             parameter=b'\x05')
         self.assertFalse(len(self.last_notified[DEFAULT_TERMINAL]))
@@ -84,4 +90,51 @@ class TestXBeeRemoteAT(NIOBlockTestCase):
         self.assertFalse(blk._xbee.send.called)
         # expected behavior is to log error
         blk.logger.exception.assert_called_once_with('Failed to execute remote at command')
+        blk.stop()
+
+
+@skipUnless(xbee_available, 'xbee is not available!!')
+class TestDigiMesh(TestXBeeRemoteAT):
+
+    @patch('xbee.DigiMesh')
+    @patch('serial.Serial')
+    def test_defaults(self, mock_serial, mock_xbee):
+        blk = XBeeRemoteAT()
+        self.configure_block(blk, {"digimesh": True})
+        blk.start()
+        blk.process_signals([Signal({'iama': 'signal'})])
+        blk._xbee.send.assert_called_once_with(
+            'remote_at',
+            id=b'\x17',
+            frame_id=b'\x01',
+            dest_addr_long=b'\x00\x00\x00\x00\x00\x00\xFF\xFF',
+            reserved=b'\xFF\xFE',
+            options=b'\x02',
+            command=b'ID',
+            parameter=b'')
+        self.assertFalse(len(self.last_notified[DEFAULT_TERMINAL]))
+        blk.stop()
+
+    @patch('xbee.DigiMesh')
+    @patch('serial.Serial')
+    def test_expression_props(self, mock_serial, mock_xbee):
+        blk = XBeeRemoteAT()
+        self.configure_block(blk, {
+            "digimesh": True,
+            "dest_addr": "00 00 00 00 00 00 00 42",
+            "command": "D0",
+            "parameter": "05"
+        })
+        blk.start()
+        blk.process_signals([Signal({'iama': 'signal'})])
+        blk._xbee.send.assert_called_once_with(
+            'remote_at',
+            id=b'\x17',
+            frame_id=b'\x01',
+            dest_addr_long=b'\x00\x00\x00\x00\x00\x00\x00\x42',
+            reserved=b'\xFF\xFE',
+            options=b'\x02',
+            command=b'D0',
+            parameter=b'\x05')
+        self.assertFalse(len(self.last_notified[DEFAULT_TERMINAL]))
         blk.stop()

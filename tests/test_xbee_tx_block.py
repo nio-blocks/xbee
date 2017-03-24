@@ -78,6 +78,7 @@ class TestXBeeTX(NIOBlockTestCase):
         self.assertEqual(4, mock_xbee.call_count)
 
 
+@skipUnless(xbee_available, 'xbee is not available!!')
 class TestDigiMesh(TestXBeeTX):
 
     @patch('xbee.DigiMesh')
