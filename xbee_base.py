@@ -5,8 +5,10 @@ from nio.block.base import Block
 from nio.signal.base import Signal
 from nio.properties import StringProperty, IntProperty, BoolProperty
 from nio.util.threading.spawn import spawn
+from nio.util.discovery import not_discoverable
 
 
+@not_discoverable
 class XBeeBase(Block):
 
     """ Read XBee over serial.
