@@ -36,7 +36,7 @@ class XBeeBase(Block):
         self._xbee = None
         self._serial = None
         self._reconnect_delay = 1
-        self._protocol = xbee.Xbee
+        self._protocol = xbee.XBee
 
     def configure(self, context):
         super().configure(context)
@@ -71,13 +71,13 @@ class XBeeBase(Block):
             self.logger.debug('Escaped is'
                 ': {}'.format(self.escaped()))
             try:
-                self._xbee = self.protocol(self._serial,
+                self._xbee = self._protocol(self._serial,
                                        callback=self._callback,
                                        escaped=self.escaped(),
                                        error_callback=self._error_callback)
             except:
                 # xbee on pypi does not have error_callback
-                self._xbee = self.protocol(self._serial,
+                self._xbee = self._protocol(self._serial,
                                        callback=self._callback,
                                        escaped=self.escaped())
                 self.logger.exception(

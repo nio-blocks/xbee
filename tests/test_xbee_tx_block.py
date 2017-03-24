@@ -46,8 +46,10 @@ class TestXBeeTX(NIOBlockTestCase):
         blk.process_signals([Signal({'iama': 'signal'})])
         blk._xbee.send.assert_called_once_with(
             'tx',
+            id=b'\x01',
             frame_id=b'\x01',
             dest_addr=b'\xFF\xFF',
+            options=b'\x00',
             data=b"{'iama': 'signal'}")
         self.assertFalse(len(self.last_notified[DEFAULT_TERMINAL]))
         blk.stop()
@@ -74,3 +76,25 @@ class TestXBeeTX(NIOBlockTestCase):
         sleep(1)
         # Each connect will fail twice, so with one reconnect, we have 4 calls.
         self.assertEqual(4, mock_xbee.call_count)
+
+
+class TestDigiMesh(TestXBeeTX):
+
+    @patch('xbee.DigiMesh')
+    @patch('serial.Serial')
+    def test_xbee_send(self, mock_serial, mock_xbee):
+        blk = XBeeTX()
+        self.configure_block(blk, {'digimesh': True})
+        blk.start()
+        blk.process_signals([Signal({'iama': 'signal'})])
+        blk._xbee.send.assert_called_once_with(
+            'tx',
+            id=b'\x10',
+            frame_id=b'\x01',
+            dest_addr=b'\x00\x00\x00\x00\x00\x00\xFF\xFF',
+            reserved=b'\xFF\xFE',
+            broadcast_radius=b'\x00',
+            options=b'\x00',
+            data=b"{'iama': 'signal'}")
+        self.assertFalse(len(self.last_notified[DEFAULT_TERMINAL]))
+        blk.stop()
