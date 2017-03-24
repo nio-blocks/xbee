@@ -45,7 +45,7 @@ class XBeeATCommand(XBeeBase):
         # packets with their responses. If set to 0 no response will be sent.
         # Could be a block property.
         self._xbee.send('at',
-                        id = b'\x08',
+                        id=b'\x08',
                         frame_id=b'\x01',
                         command=command,
                         parameter=parameter)

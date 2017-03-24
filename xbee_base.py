@@ -28,7 +28,7 @@ class XBeeBase(Block):
                             default=9600,
                             hidden=True)
     digimesh = BoolProperty(title='DigiMesh',
-                        default=False)
+                            default=False)
 
 
     def __init__(self):
