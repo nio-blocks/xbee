@@ -1,15 +1,14 @@
 import binascii
-from nio.common.discovery import Discoverable, DiscoverableType
-from nio.metadata.properties import ExpressionProperty
-from nio.metadata.properties.version import VersionProperty
+from nio.util.discovery import discoverable
+from nio.properties import Property
+from nio.properties.version import VersionProperty
 from .xbee_base import XBeeBase
 
 
-@Discoverable(DiscoverableType.block)
+@discoverable
 class XBeeATCommand(XBeeBase):
 
     """ Execute AT commands
-
     Parameters:
         command: The command to execute, ex. 'D0', WR'
         parameter: The command parameter, ex. '05' for 'D0' command
@@ -17,9 +16,10 @@ class XBeeATCommand(XBeeBase):
     """
 
     version = VersionProperty(version='0.1.0')
-    command = ExpressionProperty(title='AT Command (ascii)',
-                                 default='ID')
-    parameter = ExpressionProperty(title='Command Parameter (hex, ex: "05")')
+    command = Property(title='AT Command (ascii)',
+                       default='ID')
+    parameter = Property(title='Command Parameter (hex, ex: "05")',
+						 default='')
 
     def process_signals(self, signals):
         for signal in signals:
@@ -28,12 +28,12 @@ class XBeeATCommand(XBeeBase):
                 parameter = self.parameter(signal).replace(" ", "")
                 self._at(command, parameter)
             except:
-                self._logger.exception("Failed to execute at command")
+                self.logger.exception("Failed to execute at command")
 
     def _at(self, command, parameter):
         command = command.encode('ascii')
         parameter = binascii.unhexlify(parameter)
-        self._logger.debug(
+        self.logger.debug(
             "Executing AT command: {}, with parameter: {}".format(
                 command, parameter))
         # at: 0x08 "AT Command"
