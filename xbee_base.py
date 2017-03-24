@@ -17,21 +17,31 @@ class XBeeBase(Block):
         escaped (bool): True uses API mode 2 
         serial_port (str): COM/Serial port the XBee is connected to
         baud_rate (int): BAUD rate to communicate with the serial port
+        digimesh (bool): Use DigiMesh protocol rather than XBee (IEEE 802.15.4)
     """
 
-    escaped = BoolProperty(default=True, title='Escaped characters? (API mode 2)')
+    escaped = BoolProperty(title='Escaped characters? (API mode 2)',
+                           default=True)
     serial_port = StringProperty(title='COM/Serial Port',
                                  default='/dev/ttyAMA0')
-    baud_rate = IntProperty(title='Baud Rate', default=9600, hidden=True)
+    baud_rate = IntProperty(title='Baud Rate',
+                            default=9600,
+                            hidden=True)
+    digimesh = BoolProperty(title='DigiMesh',
+                        default=False)
+
 
     def __init__(self):
         super().__init__()
         self._xbee = None
         self._serial = None
         self._reconnect_delay = 1
+        self._protocol = xbee.Xbee
 
     def configure(self, context):
         super().configure(context)
+        if self.digimesh():
+            self._protocol = xbee.DigiMesh
         self._connect()
 
     def process_signals(self, signals):
@@ -61,13 +71,13 @@ class XBeeBase(Block):
             self.logger.debug('Escaped is'
                 ': {}'.format(self.escaped()))
             try:
-                self._xbee = xbee.XBee(self._serial,
+                self._xbee = self.protocol(self._serial,
                                        callback=self._callback,
                                        escaped=self.escaped(),
                                        error_callback=self._error_callback)
             except:
                 # xbee on pypi does not have error_callback
-                self._xbee = xbee.XBee(self._serial,
+                self._xbee = self.protocol(self._serial,
                                        callback=self._callback,
                                        escaped=self.escaped())
                 self.logger.exception(
