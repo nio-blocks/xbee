@@ -1,11 +1,9 @@
 import binascii
-from nio.util.discovery import discoverable
 from nio.properties import Property
 from nio.properties.version import VersionProperty
 from .xbee_base import XBeeBase
 
 
-@discoverable
 class XBeeATCommand(XBeeBase):
 
     """ Execute AT commands
