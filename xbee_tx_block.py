@@ -13,9 +13,9 @@ class XBeeTX(XBeeBase):
     then the block will notify the signal.
 
     Parameters:
-        dest_addr: address of remote xbee to send AT command too.
-            Default value when left blank is "FF FF" which sends a broadcast
-            or the "Destination Address" configured in the XBee
+        dest_addr: 2 or 8 byte address of remote xbee to send AT command to.
+            must be 8 bytes when using digimesh.
+            Default value when left blank is "FF FF" which sends a broadcast.
     """
 
     version = VersionProperty(version='0.2.1')
@@ -29,6 +29,8 @@ class XBeeTX(XBeeBase):
             # tx: 0x01 "Tx (Transmit) Request: 16-bit address"
             # tx: 0x10 "Tx (Transmit) Request: 64-bit address", DigiMesh
             # frame_id: 0x01
+            # dest_addr: 0xFFFF appears to make it so that it sends to the		
+            # configured "Destination Address" on the XBee
             # data: RF data bytes to be transmitted
             #
             # frame_id is an arbitrary value, 1 hex byte, used to associate
