@@ -46,10 +46,8 @@ class TestXBeeTX(NIOBlockTestCase):
         blk.process_signals([Signal({'iama': 'signal'})])
         blk._xbee.send.assert_called_once_with(
             'tx',
-            id=b'\x01',
             frame_id=b'\x01',
             dest_addr=b'\xFF\xFF',
-            options=b'\x00',
             data=b"{'iama': 'signal'}")
         self.assertFalse(len(self.last_notified[DEFAULT_TERMINAL]))
         blk.stop()

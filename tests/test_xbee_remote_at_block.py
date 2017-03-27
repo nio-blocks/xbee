@@ -25,11 +25,8 @@ class TestXBeeRemoteAT(NIOBlockTestCase):
         blk.process_signals([Signal({'iama': 'signal'})])
         blk._xbee.send.assert_called_once_with(
             'remote_at',
-            id=b'\x17',
             frame_id=b'\x01',
-            dest_addr_long=b'\x00\x00\x00\x00\x00\x00\x00\x00',
             dest_addr=b'\xFF\xFF',
-            options=b'\x02',
             command=b'ID',
             parameter=b'')
         self.assertFalse(len(self.last_notified[DEFAULT_TERMINAL]))
@@ -48,11 +45,8 @@ class TestXBeeRemoteAT(NIOBlockTestCase):
         blk.process_signals([Signal({'iama': 'signal'})])
         blk._xbee.send.assert_called_once_with(
             'remote_at',
-            id=b'\x17',
             frame_id=b'\x01',
-            dest_addr_long=b'\x00\x00\x00\x00\x00\x00\x00\x00',
             dest_addr=b'\x00\x42',
-            options=b'\x02',
             command=b'D0',
             parameter=b'\x05')
         self.assertFalse(len(self.last_notified[DEFAULT_TERMINAL]))

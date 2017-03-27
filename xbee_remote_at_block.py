@@ -58,6 +58,8 @@ class XBeeRemoteAT(XBeeBase):
         # packets with their responses. If set to 0 no response will be sent.
         # Could be a block property.
         if self.digimesh():
+            # pass all arguments to work around bug in
+            # python-xbee/xbee/digimesh.py where default values are not bytes
             self._xbee.send('remote_at',
                             id=b'\x17',
                             frame_id=b'\x01',
@@ -68,10 +70,7 @@ class XBeeRemoteAT(XBeeBase):
                             parameter=parameter)
         else:
             self._xbee.send('remote_at',
-                            id=b'\x17',
                             frame_id=b'\x01',
-                            dest_addr_long=b'\x00\x00\x00\x00\x00\x00\x00\x00',
                             dest_addr=dest_addr,
-                            options=b'\x02',
                             command=command,
                             parameter=parameter)

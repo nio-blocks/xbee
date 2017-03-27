@@ -27,6 +27,9 @@ class XBeeTX(XBeeBase):
             data_encoded = "{}".format(self.data(signal)).encode()
             self.logger.debug('Sending data: {}'.format(data_encoded))
             if self.digimesh():
+                # pass all arguments to work around bug in
+                # python-xbee/xbee/digimesh.py where default values are not
+                # bytes
                 self._xbee.send('tx',
                                 id=b'\x10',
                                 frame_id=b'\x01',
@@ -37,8 +40,6 @@ class XBeeTX(XBeeBase):
                                 data=data_encoded)
             else:
                 self._xbee.send('tx',
-                                id=b'\x01',
                                 frame_id=b'\x01',
                                 dest_addr=b'\xFF\xFF',
-                                options=b'\x00',
                                 data=data_encoded)
