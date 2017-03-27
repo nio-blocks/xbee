@@ -37,12 +37,7 @@ class XBeeRemoteAT(XBeeBase):
     def _remote_at(self, command, parameter, dest_addr):
         command = command.encode('ascii')
         parameter = binascii.unhexlify(parameter)
-        if dest_addr:
-            dest_addr = binascii.unhexlify(dest_addr)
-        elif not dest_addr and not self.digimesh():
-            dest_addr = b'\xFF\xFF'
-        elif not dest_addr and self.digimesh():
-            dest_addr = b'\x00\x00\x00\x00\x00\x00\xFF\xFF'
+        dest_addr = binascii.unhexlify(dest_addr) if dest_addr else None
         self.logger.debug(
             "Executing Remote AT command: {}, with parameter: {}".format(
                 command, parameter))
@@ -63,7 +58,8 @@ class XBeeRemoteAT(XBeeBase):
             self._xbee.send('remote_at',
                             id=b'\x17',
                             frame_id=b'\x01',
-                            dest_addr_long=dest_addr,
+                            dest_addr_long=dest_addr or \
+                                           b'\x00\x00\x00\x00\x00\x00\xFF\xFF',
                             reserved=b'\xFF\xFE',
                             options=b'\x02',
                             command=command,
@@ -71,6 +67,6 @@ class XBeeRemoteAT(XBeeBase):
         else:
             self._xbee.send('remote_at',
                             frame_id=b'\x01',
-                            dest_addr=dest_addr,
+                            dest_addr=dest_addr or b'\xFF\xFF',
                             command=command,
                             parameter=parameter)
