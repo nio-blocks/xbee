@@ -36,7 +36,7 @@ class XBeeATCommand(XBeeBase):
                 command, parameter)
         )
         # at: 0x08 "AT Command"
-        # frame_id: 0x08
+        # frame_id: 0x01
         # data: RF data bytes to be transmitted
         # command: The command to execute, ex. 'D0', WR'
         # parameter: The command parameter, ex. b'\x05' for 'D0' command

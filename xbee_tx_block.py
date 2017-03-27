@@ -26,6 +26,14 @@ class XBeeTX(XBeeBase):
         for signal in signals:
             data_encoded = "{}".format(self.data(signal)).encode()
             self.logger.debug('Sending data: {}'.format(data_encoded))
+            # tx: 0x01 "Tx (Transmit) Request: 16-bit address"
+            # tx: 0x10 "Tx (Transmit) Request: 64-bit address", DigiMesh
+            # frame_id: 0x01
+            # data: RF data bytes to be transmitted
+            #
+            # frame_id is an arbitrary value, 1 hex byte, used to associate
+            # sent packets with their responses. If set to 0 no response will
+            # be sent. Could be a block property.
             if self.digimesh():
                 # pass all arguments to work around bug in
                 # python-xbee/xbee/digimesh.py where default values are not
