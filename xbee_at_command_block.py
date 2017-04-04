@@ -33,9 +33,10 @@ class XBeeATCommand(XBeeBase):
         parameter = binascii.unhexlify(parameter)
         self.logger.debug(
             "Executing AT command: {}, with parameter: {}".format(
-                command, parameter))
+                command, parameter)
+        )
         # at: 0x08 "AT Command"
-        # frame_id: 0x08
+        # frame_id: 0x01
         # data: RF data bytes to be transmitted
         # command: The command to execute, ex. 'D0', WR'
         # parameter: The command parameter, ex. b'\x05' for 'D0' command
@@ -44,5 +45,7 @@ class XBeeATCommand(XBeeBase):
         # frame_id is an arbitrary value, 1 hex byte, used to associate sent
         # packets with their responses. If set to 0 no response will be sent.
         # Could be a block property.
-        self._xbee.send('at', frame_id=b'\x01', command=command,
+        self._xbee.send('at',
+                        frame_id=b'\x01',
+                        command=command,
                         parameter=parameter)

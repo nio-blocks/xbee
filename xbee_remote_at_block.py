@@ -12,15 +12,17 @@ class XBeeRemoteAT(XBeeBase):
         command: The command to execute, ex. 'D0', WR'
         parameter: The command parameter, ex. '05' for 'D0' command
            to set pin high
-        dest_addr: 2 byte address of remote xbee to send AT command too.
+        dest_addr: 2 or 8 byte address of remote xbee to send AT command to.
+            must be 8 bytes when using digimesh.
             Default value when left blank is "FF FF" which sends a broadcast.
     """
 
     version = VersionProperty(version='0.1.0')
     command = Property(title='AT Command (ascii)', default='ID')
     parameter = Property(title='Command Parameter (hex, ex: "05")', default='')
-    dest_addr = Property(
-        title='Destination Address (2 byte hex, ex: "00 05")', default='')
+    dest_addr = Property(title='Destination Address \
+                         (2 or 8 bytes hex, ex: "00 05")',
+                         default='')
 
     def process_signals(self, signals):
         for signal in signals:
@@ -35,7 +37,7 @@ class XBeeRemoteAT(XBeeBase):
     def _remote_at(self, command, parameter, dest_addr):
         command = command.encode('ascii')
         parameter = binascii.unhexlify(parameter)
-        dest_addr = binascii.unhexlify(dest_addr) if dest_addr else b'\xFF\xFF'
+        dest_addr = binascii.unhexlify(dest_addr) if dest_addr else None
         self.logger.debug(
             "Executing Remote AT command: {}, with parameter: {}".format(
                 command, parameter))
@@ -50,6 +52,21 @@ class XBeeRemoteAT(XBeeBase):
         # frame_id is an arbitrary value, 1 hex byte, used to associate sent 
         # packets with their responses. If set to 0 no response will be sent.
         # Could be a block property.
-        self._xbee.send(
-            'remote_at', frame_id=b'\x01', dest_addr=dest_addr,
-            command=command, parameter=parameter)
+        if self.digimesh():
+            # pass all arguments to work around bug in
+            # python-xbee/xbee/digimesh.py where default values are not bytes
+            self._xbee.send('remote_at',
+                            id=b'\x17',
+                            frame_id=b'\x01',
+                            dest_addr_long=dest_addr or \
+                                           b'\x00\x00\x00\x00\x00\x00\xFF\xFF',
+                            reserved=b'\xFF\xFE',
+                            options=b'\x02',
+                            command=command,
+                            parameter=parameter)
+        else:
+            self._xbee.send('remote_at',
+                            frame_id=b'\x01',
+                            dest_addr=dest_addr or b'\xFF\xFF',
+                            command=command,
+                            parameter=parameter)
