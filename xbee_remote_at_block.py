@@ -28,18 +28,18 @@ class XBeeRemoteAT(XBeeBase):
     def process_signals(self, signals):
         for signal in signals:
             try:
-                command = self.command(signal)
-                parameter = self.parameter(signal).replace(" ", "")
+                command = self.command(signal).encode('ascii')
+                parameter = \
+                    binascii.unhexlify(self.parameter(signal).replace(" ", ""))
                 dest_addr = \
-                    binascii.unhexlify(self.dest_addr(signal).replace(" ", "")) \
-                    if self.dest_addr(signal) else None
+                    binascii.unhexlify(
+                        self.dest_addr(signal).replace(" ", "")) \
+                        if self.dest_addr(signal) else None
                 self._remote_at(command, parameter, dest_addr)
             except:
                 self.logger.exception("Failed to execute remote at command")
 
     def _remote_at(self, command, parameter, dest_addr):
-        command = command.encode('ascii')
-        parameter = binascii.unhexlify(parameter)
         self.logger.debug(
             "Executing Remote AT command: {}, with parameter: {}".format(
                 command, parameter))
