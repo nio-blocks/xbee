@@ -23,15 +23,15 @@ class XBeeTX(XBeeBase):
     data = Property(title="Data", default="{{ $.to_dict() }}")
     dest_addr = Property(title='Destination Address \
                          (2 or 8 bytes hex, ex: "00 05")',
-                         default='')
-    # todo: should None be allowed? if not then line33 can omit the if/else
-    # and .send() calls do not need OR operator
+                         default='',
+                         allow_none=True)
 
     def process_signals(self, signals):
         for signal in signals:
             data_encoded = "{}".format(self.data(signal)).encode()
-            dest_addr = self.dest_addr(signal).replace(" ", "")
-            dest_addr = binascii.unhexlify(dest_addr) if dest_addr else None
+            dest_addr = \
+                binascii.unhexlify(self.dest_addr(signal).replace(" ", "")) \
+                if self.dest_addr(signal) else None
             self.logger.debug('Sending data: {}'.format(data_encoded))
             # tx: 0x01 "Tx (Transmit) Request: 16-bit address"
             # tx: 0x10 "Tx (Transmit) Request: 64-bit address", DigiMesh
