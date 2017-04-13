@@ -81,7 +81,7 @@ class TestXBeeTX(NIOBlockTestCase):
         blk = XBeeTX()
         self.configure_block(blk, {
             "dest_addr": "00 42",
-            "data": "foo",
+            "data": "{{ $iama }}",
         })
         blk.start()
         blk.process_signals([Signal({'iama': 'signal'})])
@@ -89,7 +89,7 @@ class TestXBeeTX(NIOBlockTestCase):
             'tx',
             frame_id=b'\x01',
             dest_addr=b'\x00\x42',
-            data=b'foo')
+            data=b'signal')
 
 
 @skipUnless(xbee_available, 'xbee is not available!!')
@@ -120,7 +120,7 @@ class TestDigiMesh(TestXBeeTX):
         blk = XBeeTX()
         self.configure_block(blk, {
             "dest_addr": "00 00 00 00 00 00 00 42",
-            "data": "foo",
+            "data": "{{ $iama }}",
             'digimesh': True,
         })
         blk.start()
@@ -133,5 +133,5 @@ class TestDigiMesh(TestXBeeTX):
             reserved=b'\xFF\xFE',
             broadcast_radius=b'\x00',
             options=b'\x00',
-            data=b'foo')
+            data=b'signal')
 
