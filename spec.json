@@ -1,0 +1,65 @@
+{
+  "nio/XBeeRemoteAT": {
+    "Description": "Send [Remote AT commands](http://examples.digi.com/wp-content/uploads/2012/07/XBee_ZB_ZigBee_AT_Commands.pdf) to a destination XBee.",
+    "Output": "### default\nNotifies a signal for each frame read from XBee. Official Signal response information can be seen in the `api_responses` of the [source code]('https://github.com/nioinnovation/python-xbee/blob/master/xbee/ieee.py').\n- **id**: The type of response.\n#### remote\\_at\\_response\nEach Remote AT Command will notify a response signal for each remote XBee. This can be many XBees when broadcasting to `dest_addr` `FF FF`.\n```\n{\n'id': 'remote_at_response',\n'frame_id': b'\\x01',\n'source_addr_long': b'\\x00\\x13\\xa2\\x00@\\xc1S\\x05',\n'status': b'\\x00',\n'command': b'D0',\n'source_addr': b'\\x00\\x03'\n}\n```\nEach response includes a status, with the following possible values:\n- `00 OK`\n- `01 Error`\n- `02 Invalid Command`\n- `03 Invalid Parameter`\n- `04 No Response`",
+    "Version": "1.0.0",
+    "Category": "Hardware",
+    "Input": "Any list of signals.",
+    "Commands": {},
+    "Dependencies": [
+      "-   [XBee](https://pypi.python.org/pypi/XBee)"
+    ],
+    "Properties": {
+      "command": {
+        "description": "The command to execute, ex. `D0`, `WR`."
+      },
+      "dest_addr": {
+        "description": "2 byte address of remote XBee to send AT command too. Default value when left blank is `FF FF` which sends a broadcast."
+      },
+      "serial_port": {
+        "description": "COM/Serial port of XBee. From the computer terminal, view the available ports with `ls /dev/tty.\\`. Ex. `/dev/tty.usbserial-DA013Y6Q`"
+      },
+      "parameter": {
+        "description": "The command parameter, ex. `05` for `D0` command to set pin high."
+      }
+    }
+  },
+  "nio/XBeeTX": {
+    "Description": "Transmit signal through XBee over serial.\nInput signals are serialized and transmitted to the destination XBee(s).\nDestination XBees notify a signal for each received transmission.\nEssentially, this block can be used to send signals from one nio instance to another.",
+    "Output": "### default\nNotifies a signal for each frame read from XBee. Official Signal response information can be seen in the `api_responses` of the [source code]('https://github.com/nioinnovation/python-xbee/blob/master/xbee/ieee.py').\n- **id**: The type of response.\n#### rx\\_id\\_data\n- **rssi**: RF signal strength\n- **source_addr**: Which XBee sent the signal\n- **samples**: A list of readings from each enabled IO pin. Each item of the list is a dictionary of readings for all the enabled IO pins. Keys are of format (adc|dio)-[0-8]\n- **options**: ???\n```\n{\n'id': 'rx_io_data',\n'samples': [{'adc-0': 525, 'adc-3': 390, 'adc-1': 472, 'adc-5': 312, 'adc-4': 410, 'adc-2': 437}],\n'options': b'\\x00',\n'rssi': b'2',\n'source_addr': b'\\x00\\x01'}\n}\n```",
+    "Version": "1.0.0",
+    "Input": "None",
+    "Category": "Hardware",
+    "Commands": {},
+    "Dependencies": [
+      "-   [XBee](https://pypi.python.org/pypi/XBee)"
+    ],
+    "Properties": {
+      "serial_port": {
+        "description": "COM/Serial port of XBee. From the computer terminal, view the available ports with `ls /dev/tty.`. Ex. `/dev/tty.usbserial-DA013Y6Q`"
+      }
+    }
+  },
+  "nio/XBeeATCommand": {
+    "Description": "Send [AT commands](http://examples.digi.com/wp-content/uploads/2012/07/XBee_ZB_ZigBee_AT_Commands.pdf) to a local XBee.",
+    "Output": "### default\nNotifies a signal for each frame read from XBee. Official Signal response information can be seen in the `api_responses` of the [source code]('https://github.com/nioinnovation/python-xbee/blob/master/xbee/ieee.py').\n- **id**: The type of response.\n#### at_response\nEach AT Command will notify a response signal.\n```\n{\n'id': 'at_response',\n'frame_id': b'\\x88',\n'status': b'\\x00',\n'command': b'D0'\n}\n```\nEach response includes a status, with the following possible values:\n- `00 OK`\n- `01 Error`\n- `02 Invalid Command`\n- `03 Invalid Parameter`\n- `04 No Response`",
+    "Version": "1.0.0",
+    "Category": "Hardware",
+    "Input": "Any list of signals.",
+    "Commands": {},
+    "Dependencies": [
+      "-   [XBee](https://pypi.python.org/pypi/XBee)"
+    ],
+    "Properties": {
+      "command": {
+        "description": "The command to execute, ex. `D0`, `WR`."
+      },
+      "serial_port": {
+        "description": "COM/Serial port of XBee. From the computer terminal, view the available ports with `ls /dev/tty.`. Ex. `/dev/tty.usbserial-DA013Y6Q`"
+      },
+      "parameter": {
+        "description": "The command parameter, ex. `05` for `D0` command to set pin high."
+      }
+    }
+  }
+}

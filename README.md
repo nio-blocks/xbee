@@ -1,5 +1,4 @@
-XBee Blocks
-===========
+# XBee Blocks
 
 IMPORTANT: If you are using a USB connection to your XBee(s) rather than TTL serial, you first need to install the [FTDI drivers](http://www.ftdichip.com/Support/Documents/AppNotes/AN_134_FTDI_Drivers_Installation_Guide_for_MAC_OSX.pdf) to communicate with the XBEE over USB. You will also want a [USB explorer](https://learn.sparkfun.com/tutorials/exploring-xbees-and-xctu/selecting-an-explorer) to hook up the XBee to your computer.
 
@@ -9,12 +8,10 @@ XBee modules need to be configured with AP=2, API w/ PPP, which automatically es
 
 From the computer terminal, view the serial ports with `ls /dev/tty.*` to discover where your XBee is connected. Ex. `/dev/tty.usbserial-DA013Y6Qdev/tty.usbserial`
 
-Output
-------
+## Output
 
 Notifies a signal for each frame read from XBee. Each block in this repository will notify a signal for each api response received at that XBee. For example, XBeeRemoteAT notifies a `remote_at_response` containing the status of the Remote AT command.
 
--------------------------------------------------------------------------------
 
 XBeeTX
 ======
@@ -71,7 +68,7 @@ Notifies a signal for each frame read from XBee. Official Signal response inform
 
 ```
 
--------------------------------------------------------------------------------
+***
 
 XBeeATCommand
 =============
@@ -127,7 +124,7 @@ Each response includes a status, with the following possible values:
 - `03 Invalid Parameter`
 - `04 No Response`
 
--------------------------------------------------------------------------------
+***
 
 XBeeRemoteAT
 ============
