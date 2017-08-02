@@ -1,17 +1,17 @@
 {
+  "nio/XBeeATCommand": {
+    "language": "Python",
+    "version": "0.0.1",
+    "reference": "github.com/nio-blocks/xbee.git@v0.0.1"
+  },
   "nio/XBeeRemoteAT": {
-    "Reference": "github.com/nio-blocks/xbee.git@v1.0.0",
-    "Language": "Python",
-    "Version": "1.0.0"
+    "language": "Python",
+    "version": "0.0.1",
+    "reference": "github.com/nio-blocks/xbee.git@v0.0.1"
   },
   "nio/XBeeTX": {
-    "Reference": "github.com/nio-blocks/xbee.git@v1.0.0",
-    "Language": "Python",
-    "Version": "1.0.0"
-  },
-  "nio/XBeeATCommand": {
-    "Reference": "github.com/nio-blocks/xbee.git@v1.0.0",
-    "Language": "Python",
-    "Version": "1.0.0"
+    "language": "Python",
+    "version": "0.0.1",
+    "reference": "github.com/nio-blocks/xbee.git@v0.0.1"
   }
 }
