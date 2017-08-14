@@ -1,9 +1,9 @@
 from unittest import skipUnless
 from unittest.mock import patch
+
 from nio.block.terminals import DEFAULT_TERMINAL
 from nio.signal.base import Signal
 from nio.testing.block_test_case import NIOBlockTestCase
-
 
 xbee_available = True
 try:
@@ -24,7 +24,8 @@ class TestXBeeTX(NIOBlockTestCase):
         blk.start()
         blk._callback({'sample': 'signal'})
         self.assertTrue(len(self.last_notified[DEFAULT_TERMINAL]))
-        self.assertEqual(self.last_notified[DEFAULT_TERMINAL][0].sample, 'signal')
+        self.assertEqual(
+            self.last_notified[DEFAULT_TERMINAL][0].sample, 'signal')
         blk.stop()
 
     @patch('xbee.XBee')
@@ -134,4 +135,3 @@ class TestDigiMesh(TestXBeeTX):
             broadcast_radius=b'\x00',
             options=b'\x00',
             data=b'signal')
-

@@ -1,9 +1,9 @@
 from unittest import skipUnless
 from unittest.mock import MagicMock, patch
+
 from nio.block.terminals import DEFAULT_TERMINAL
 from nio.signal.base import Signal
 from nio.testing.block_test_case import NIOBlockTestCase
-
 
 xbee_available = True
 try:
@@ -66,7 +66,8 @@ class TestXBeeRemoteAT(NIOBlockTestCase):
         # It needs to be a byte, represented as two ascii chars
         self.assertFalse(blk._xbee.send.called)
         # expected behavior is to log error
-        blk.logger.exception.assert_called_once_with('Failed to execute remote at command')
+        blk.logger.exception.assert_called_once_with(
+            'Failed to execute remote at command')
         blk.stop()
 
     @patch('xbee.XBee')
@@ -83,7 +84,8 @@ class TestXBeeRemoteAT(NIOBlockTestCase):
         # It needs to be a two ascii characters
         self.assertFalse(blk._xbee.send.called)
         # expected behavior is to log error
-        blk.logger.exception.assert_called_once_with('Failed to execute remote at command')
+        blk.logger.exception.assert_called_once_with(
+            'Failed to execute remote at command')
         blk.stop()
 
 

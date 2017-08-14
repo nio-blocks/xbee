@@ -1,6 +1,8 @@
 import binascii
+
 from nio.properties import Property
 from nio.properties.version import VersionProperty
+
 from .xbee_base import XBeeBase
 
 
@@ -29,12 +31,11 @@ class XBeeRemoteAT(XBeeBase):
         for signal in signals:
             try:
                 command = self.command(signal).encode('ascii')
-                parameter = \
-                    binascii.unhexlify(self.parameter(signal).replace(" ", ""))
-                dest_addr = \
-                    binascii.unhexlify(
-                        self.dest_addr(signal).replace(" ", "")) \
-                        if self.dest_addr(signal) else None
+                parameter = binascii.unhexlify(
+                    self.parameter(signal).replace(" ", ""))
+                dest_addr = binascii.unhexlify(
+                    self.dest_addr(signal).replace(" ", "")) if \
+                    self.dest_addr(signal) else None
                 self._remote_at(command, parameter, dest_addr)
             except:
                 self.logger.exception("Failed to execute remote at command")
@@ -51,21 +52,22 @@ class XBeeRemoteAT(XBeeBase):
         # parameter: The command parameter, ex. b'\x05' for 'D0' command
         #    to set pin high
         #
-        # frame_id is an arbitrary value, 1 hex byte, used to associate sent 
+        # frame_id is an arbitrary value, 1 hex byte, used to associate sent
         # packets with their responses. If set to 0 no response will be sent.
         # Could be a block property.
         if self.digimesh():
             # pass all arguments to work around bug in
             # python-xbee/xbee/digimesh.py where default values are not bytes
-            self._xbee.send('remote_at',
-                            id=b'\x17',
-                            frame_id=b'\x01',
-                            dest_addr_long=dest_addr or \
-                                           b'\x00\x00\x00\x00\x00\x00\xFF\xFF',
-                            reserved=b'\xFF\xFE',
-                            options=b'\x02',
-                            command=command,
-                            parameter=parameter)
+            self._xbee.send(
+                'remote_at',
+                id=b'\x17',
+                frame_id=b'\x01',
+                dest_addr_long=dest_addr or
+                b'\x00\x00\x00\x00\x00\x00\xFF\xFF',
+                reserved=b'\xFF\xFE',
+                options=b'\x02',
+                command=command,
+                parameter=parameter)
         else:
             self._xbee.send('remote_at',
                             frame_id=b'\x01',
