@@ -1,6 +1,8 @@
 import binascii
+
 from nio.properties import Property
 from nio.properties.version import VersionProperty
+
 from .xbee_base import XBeeBase
 
 
@@ -16,8 +18,7 @@ class XBeeATCommand(XBeeBase):
     version = VersionProperty(version='0.1.0')
     command = Property(title='AT Command (ascii)',
                        default='ID')
-    parameter = Property(title='Command Parameter (hex, ex: "05")',
-						 default='')
+    parameter = Property(title='Command Parameter (hex, ex: "05")', default='')
 
     def process_signals(self, signals):
         for signal in signals:

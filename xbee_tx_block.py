@@ -1,6 +1,8 @@
 import binascii
+
 from nio.properties import Property
 from nio.properties.version import VersionProperty
+
 from .xbee_base import XBeeBase
 
 
@@ -36,7 +38,7 @@ class XBeeTX(XBeeBase):
             # tx: 0x01 "Tx (Transmit) Request: 16-bit address"
             # tx: 0x10 "Tx (Transmit) Request: 64-bit address", DigiMesh
             # frame_id: 0x01
-            # dest_addr: 0xFFFF appears to make it so that it sends to the		
+            # dest_addr: 0xFFFF appears to make it so that it sends to the
             # configured "Destination Address" on the XBee
             # data: RF data bytes to be transmitted
             #
@@ -47,15 +49,16 @@ class XBeeTX(XBeeBase):
                 # pass all arguments to work around bug in
                 # python-xbee/xbee/digimesh.py where default values are not
                 # bytes
-                self._xbee.send('tx',
-                                id=b'\x10',
-                                frame_id=b'\x01',
-                                dest_addr=dest_addr or \
-                                    b'\x00\x00\x00\x00\x00\x00\xFF\xFF',
-                                reserved=b'\xFF\xFE',
-                                broadcast_radius=b'\x00',
-                                options=b'\x00',
-                                data=data_encoded)
+                self._xbee.send(
+                    'tx',
+                    id=b'\x10',
+                    frame_id=b'\x01',
+                    dest_addr=dest_addr or b'\x00\x00\x00\x00\x00\x00\xFF\xFF',
+                    reserved=b'\xFF\xFE',
+                    broadcast_radius=b'\x00',
+                    options=b'\x00',
+                    data=data_encoded
+                )
             else:
                 self._xbee.send('tx',
                                 frame_id=b'\x01',

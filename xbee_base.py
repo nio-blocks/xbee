@@ -1,6 +1,7 @@
 import serial
 import xbee
 from time import sleep
+
 from nio.block.base import Block
 from nio.signal.base import Signal
 from nio.properties import StringProperty, IntProperty, BoolProperty
@@ -14,7 +15,7 @@ class XBeeBase(Block):
     """ Read XBee over serial.
 
     Parameters:
-        escaped (bool): True uses API mode 2 
+        escaped (bool): True uses API mode 2
         serial_port (str): COM/Serial port the XBee is connected to
         baud_rate (int): BAUD rate to communicate with the serial port
         digimesh (bool): Use DigiMesh protocol rather than XBee (IEEE 802.15.4)
@@ -29,7 +30,6 @@ class XBeeBase(Block):
                             hidden=True)
     digimesh = BoolProperty(title='DigiMesh',
                             default=False)
-
 
     def __init__(self):
         super().__init__()
@@ -66,20 +66,24 @@ class XBeeBase(Block):
         try:
             self._serial = serial.Serial(self.serial_port(), self.baud_rate())
             self.logger.debug(
-                'Establish serial connection with XBee'
-                ': {}'.format(self.serial_port()))
-            self.logger.debug('Escaped is'
-                ': {}'.format(self.escaped()))
+                'Establish serial connection with XBee: {}'.format(
+                    self.serial_port())
+            )
+            self.logger.debug('Escaped is: {}'.format(self.escaped()))
             try:
-                self._xbee = self._protocol(self._serial,
-                                       callback=self._callback,
-                                       escaped=self.escaped(),
-                                       error_callback=self._error_callback)
+                self._xbee = self._protocol(
+                    self._serial,
+                    callback=self._callback,
+                    escaped=self.escaped(),
+                    error_callback=self._error_callback
+                )
             except:
                 # xbee on pypi does not have error_callback
-                self._xbee = self._protocol(self._serial,
-                                       callback=self._callback,
-                                       escaped=self.escaped())
+                self._xbee = self._protocol(
+                    self._serial,
+                    callback=self._callback,
+                    escaped=self.escaped()
+                )
                 self.logger.exception(
                     'XBee connection established but the xbee library on pypi'
                     ' does not have error_callback. For improved performance,'

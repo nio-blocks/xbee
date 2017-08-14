@@ -1,6 +1,7 @@
 from collections import defaultdict
 from unittest import skipUnless
 from unittest.mock import MagicMock, patch
+
 from nio.block.terminals import DEFAULT_TERMINAL
 from nio.signal.base import Signal
 from nio.testing.block_test_case import NIOBlockTestCase
@@ -70,5 +71,6 @@ class TestXBeeATCommand(NIOBlockTestCase):
         # It needs to be a two ascii characters
         self.assertFalse(blk._xbee.send.called)
         # expected behavior is to log an error
-        blk.logger.exception.assert_called_once_with('Failed to execute at command')
+        blk.logger.exception.assert_called_once_with(
+            'Failed to execute at command')
         blk.stop()

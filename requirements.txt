@@ -1,2 +1,2 @@
-https://github.com/neutralio/python-xbee/zipball/master
+xbee
 pyserial
