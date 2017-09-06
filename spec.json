@@ -2,6 +2,10 @@
   "nio/XBeeATCommand": {
     "version": "0.1.0",
     "description": "Send AT commands to a local XBee",
+    "categories": [
+      "Communication",
+      "Hardware"
+    ],
     "properties": {
       "baud_rate": {
         "title": "Baud Rate",
@@ -55,6 +59,10 @@
   "nio/XBeeRemoteAT": {
     "version": "0.1.0",
     "description": "Send Remote AT commands to a destination XBee",
+    "categories": [
+      "Communication",
+      "Hardware"
+    ],
     "properties": {
       "baud_rate": {
         "title": "Baud Rate",
@@ -114,6 +122,10 @@
   "nio/XBeeTX": {
     "version": "0.2.1",
     "description": "Transmit signal through XBee over serial. Input signals are serialized and transmitted to the destination XBee(s). Destination XBees notify a signal for each received transmission. Essentially, this block can be used to send signals from one nio instance to another.",
+    "categories": [
+      "Communication",
+      "Hardware"
+    ],
     "properties": {
       "baud_rate": {
         "title": "Baud Rate",
